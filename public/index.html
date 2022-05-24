@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root">
+      <div id="query"></div>
+      <p></p>
+      <div bp-data="{evt:click, id: abc}">点击我会上报一条数据</div>
+      <div bp-data="efg">点击我会上报一条数据2</div>
+      <a onclick="toA()">a</a>
+      <br />
+      <a onclick="toB()">b</a>
+    </div>
+
+    <script>
+      function toA() {
+        console.log("toA");
+        history.replaceState({}, "", "#a");
+      }
+      function toB() {
+        console.log("toB");
+        history.replaceState({}, "", "#b");
+      }
+    </script>
+  </body>
+</html>

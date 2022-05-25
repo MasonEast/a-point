@@ -9,6 +9,20 @@ import { parseMetadata, getBrowserData } from "./utils";
 
 const CONSTANTS = {
   BLOCK_STR: "bp-data",
+  SERVER_URL: "http://localhost:8889",
+  TIME_INTERVAL: 1000 * 60 * 5,
+};
+
+const sendData = () => {
+  fetch("/api/send", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+    body: JSON.stringify({
+      data: sessionStorage.getItem("@@a-point"),
+    }),
+  });
 };
 
 ((window, document) => {
@@ -78,7 +92,13 @@ const CONSTANTS = {
     sessionStorage.setItem("@@a-point", JSON.stringify(v));
   });
 
+  // 监听关闭或刷新页面，及时将数据发送给后端
   window.addEventListener("beforeunload", (e) => {
     console.log(e);
+    sendData();
+    clearInterval(timeInterval);
   });
+
+  // 防止用户一直停留页面导致数据不会上报，通过定时任务完成上报
+  const timeInterval = setInterval(sendData, CONSTANTS.TIME_INTERVAL);
 })(window, document);

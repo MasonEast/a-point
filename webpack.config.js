@@ -26,10 +26,10 @@ module.exports = {
     }),
   ],
   devServer: {
-    port: 8888,
+    port: 8887,
     proxy: {
       "/api": {
-        target: "http://localhost:8889",
+        target: "http://localhost:8888",
         pathRewrite: { "^/api": "" },
       },
     },

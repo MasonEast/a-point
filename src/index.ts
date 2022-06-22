@@ -1,4 +1,6 @@
 // import uuid from "uuid-js";
+import html2canvas from "html2canvas";
+
 import { parseMetadata, getBrowserData } from "./utils";
 
 /**
@@ -9,7 +11,7 @@ import { parseMetadata, getBrowserData } from "./utils";
 
 const CONSTANTS = {
   BLOCK_STR: "bp-data",
-  SERVER_URL: "http://localhost:8889",
+  SERVER_URL: "http://localhost:8888",
   TIME_INTERVAL: 1000 * 60 * 5,
 };
 
@@ -37,6 +39,8 @@ const sendData = () => {
         if (target.hasAttribute(str)) {
           // 解析用户的埋点数据
           const metadata = target.getAttribute(str);
+          console.dir(target.offsetLeft, "--");
+
           if (metadata) {
             const data = parseMetadata(metadata);
             const sData = sessionStorage.getItem("@@a-point") as string;
@@ -51,6 +55,16 @@ const sendData = () => {
                 type: data.evt,
               };
             }
+            // 截图
+            const root: HTMLElement = document.querySelector(
+              "#root"
+            ) as HTMLElement;
+            if (root) {
+              html2canvas(root).then((canvas) => {
+                document.body.appendChild(canvas);
+              });
+            }
+
             sessionStorage.setItem("@@a-point", JSON.stringify(v));
           }
           break;
